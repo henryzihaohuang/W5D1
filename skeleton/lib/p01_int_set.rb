@@ -43,18 +43,27 @@ class IntSet
   end
 
   def insert(num)
+    if !self[num].include?(num)
+      self[num] << num
+    end
   end
 
   def remove(num)
+    if self[num].include?(num)
+      self[num].delete(num)
+    end
   end
 
   def include?(num)
+    self[num].include?(num) ? true : false
   end
 
   private
 
   def [](num)
-    # optional but useful; return the bucket corresponding to `num`
+    num = num % num_buckets
+    #optional but useful; return the bucket corresponding to `num`
+    @store[num]
   end
 
   def num_buckets
@@ -71,18 +80,31 @@ class ResizingIntSet
   end
 
   def insert(num)
+    if !self[num].include?(num)
+      self[num] << num
+    end
+
+    @count += 1
+    resize! if count == num_buckets 
   end
 
   def remove(num)
+    if self[num].include?(num)
+      self[num].delete(num)
+      @count -= 1
+    end
   end
 
   def include?(num)
+    self[num].include?(num) ? true : false
   end
 
   private
 
   def [](num)
-    # optional but useful; return the bucket corresponding to `num`
+    num = num % num_buckets
+    #optional but useful; return the bucket corresponding to `num`
+    @store[num]
   end
 
   def num_buckets
@@ -90,5 +112,13 @@ class ResizingIntSet
   end
 
   def resize!
+    resized = self.class.new(2*num_buckets)
+
+    self.each_with_index do |subarray, i|
+      resized[i] = subarray
+    end
+
+    resized
+
   end
 end
