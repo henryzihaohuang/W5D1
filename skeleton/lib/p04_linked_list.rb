@@ -21,11 +21,11 @@ class Node
   end
 end
 
-class LinkedList < Node
+class LinkedList
   attr_accessor :head, :tail
   def initialize
-    @head = Node.new(key,val)
-    @tail = Node.new(key,val)
+    @head = Node.new
+    @tail = Node.new
     @head.next = @tail
     @tail.prev = @head
 
@@ -37,13 +37,15 @@ class LinkedList < Node
   end
 
   def first
+    self.head.next
   end
 
   def last
+    self.tail.prev
   end
 
   def empty?
-    self.head.next == self.tail ? true : false
+    self.head.next == self.tail
   end
 
   def get(key)
@@ -56,7 +58,9 @@ class LinkedList < Node
     new_node = Node.new(key, val)
     new_node.prev = self.tail.prev
     new_node.next = self.tail
+    self.tail.prev.next = new_node 
     self.tail.prev = new_node
+    
   end
 
   def update(key, val)
