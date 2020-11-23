@@ -5,8 +5,9 @@ end
 class Array
   def hash
     return nil.hash if self.empty?
+
     self.inject do |accum, ele|
-      accum= accum^ele * self.index(ele)
+      accum= accum.hash^ele.hash * self.index(ele)
       accum
     end
   end
@@ -30,8 +31,7 @@ class Hash
   # This returns 0 because rspec will break if it returns nil
   # Make sure to implement an actual Hash#hash method
   def hash
-    flattened = self.to_a.flatten
-    flattened.length.each do |i|
-    end
+    array = self.to_a.sort
+    array.flatten.hash
   end
 end
