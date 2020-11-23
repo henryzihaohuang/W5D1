@@ -81,7 +81,7 @@ class ResizingIntSet
 
   def insert(num)
     if include?(num)
-      false
+      return false
     else
       self[num] << num
     end
@@ -114,13 +114,13 @@ class ResizingIntSet
   end
 
   def resize!
-    resized = self.class.new(2*num_buckets)
+    new_store= Array.new(2 * num_buckets) { Array.new } 
 
-    self.each_with_index do |subarray, i|
-      resized[i] = subarray
+    (0...@store.length).each do |subarray|
+      @store[subarray].each do |i|
+        new_store[i] << i
+      end
     end
-
-    resized
-
+    @store = new_store
   end
 end
