@@ -4,18 +4,25 @@ end
 
 class Array
   def hash
-    self.each do |ele|
-      ele.hash
+    return nil.hash if self.empty?
+    self.inject do |accum, ele|
+      accum= accum^ele * self.index(ele)
+      accum
     end
   end
 end
 
 class String
+  ALPHA = ("a".."z").to_a
   def hash
     chars = self.chars
-    chars.each do |char|
-      char.hash
+
+    new_chars = chars.map do |char|
+      ALPHA.index(char.downcase)
     end
+
+    new_chars.hash 
+
   end
 end
 
@@ -23,8 +30,9 @@ class Hash
   # This returns 0 because rspec will break if it returns nil
   # Make sure to implement an actual Hash#hash method
   def hash
-    self.to_a.each do |ele|
-      ele.hash
-    end
+    # self.to_a.each do |subarray|
+    #   subarray.hash
+    # end
+    0
   end
 end
